@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: raw_data
+    database: data-warehous3
+    schema: nytaxi 
+    
+    tables:
+      - name: green_tripdata 
+      - name: yellow_tripdata
