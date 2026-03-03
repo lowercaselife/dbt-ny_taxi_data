@@ -50,7 +50,7 @@ final as (
 
     from trips_deduped
     left join payment_types p
-        on cast(trips_deduped.payment_type as int) = cast(p.payment_type as int)
+        on cast(trips_deduped.payment_type as string) = cast(p.payment_type as string)
     where rn = 1
 )
 

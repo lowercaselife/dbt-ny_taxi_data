@@ -46,3 +46,10 @@ models:
       +materialized: table
     marts:
       +materialized: table
+
+seeds:
+  my_new_project:
+    payment_type_lookup:
+      +column_types:
+        payment_type: integer
+        description: string
