@@ -6,10 +6,11 @@
     4: 'Unknown/Other'
 } %}
 
-case {{ vendor_id_column }}
+case 
     {% for vendor_id, vendor_name in vendors.items() %}
-    when {{ vendor_id }} then '{{ vendor_name }}'
+    when {{ vendor_id_column }} = {{ vendor_id }} then '{{ vendor_name }}'
     {% endfor %}
+    else 'Unknown/Other'
 end
 
 {% endmacro %}
