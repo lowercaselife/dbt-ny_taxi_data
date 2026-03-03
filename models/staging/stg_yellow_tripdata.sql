@@ -1,5 +1,6 @@
 select
   -- identifiers
+  'yellow' as service_type,
   cast(vendorid as int) as vendor_id,
   cast(ratecodeid as int) as rate_code_id,
   cast(pulocationid as int) as pickup_location_id,
@@ -22,6 +23,8 @@ select
   0 as ehail_fee, -- yellow taxis do not have ehail fees
   cast(total_amount as numeric) as total_amount,
   cast(payment_type as int) as payment_type
+
+  
 
 from {{ source('raw_data', 'yellow_tripdata') }}
 where tpep_pickup_datetime is not null
