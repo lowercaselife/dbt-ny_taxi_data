@@ -19,49 +19,39 @@ trips_deduped as (
 
 final as (
     select
-        -- generate trip_id here instead
         to_hex(md5(concat(
-            cast(vendor_id as string), '-',
-            cast(pickup_datetime as string), '-',
-            cast(dropoff_datetime as string), '-',
-            service_type
+            coalesce(cast(trips_deduped.vendor_id as string), ''), '-',
+            coalesce(cast(trips_deduped.pickup_datetime as string), ''), '-',
+            coalesce(cast(trips_deduped.dropoff_datetime as string), ''), '-',
+            coalesce(trips_deduped.service_type, '')
         ))) as trip_id,
 
-        -- service
-        service_type,
-
-        -- identifiers
-        vendor_id,
-        rate_code_id,
-        pickup_location_id,
-        dropoff_location_id,
-
-        -- timestamps
-        pickup_datetime,
-        dropoff_datetime,
-
-        -- trip info
-        store_and_fwd_flag,
-        passenger_count,
-        trip_distance,
-        trip_type,
-
-        -- payment
-        t.payment_type,
+        trips_deduped.service_type,
+        trips_deduped.vendor_id,
+        trips_deduped.rate_code_id,
+        trips_deduped.pickup_location_id,
+        trips_deduped.dropoff_location_id,
+        trips_deduped.pickup_datetime,
+        trips_deduped.dropoff_datetime,
+        trips_deduped.store_and_fwd_flag,
+        trips_deduped.passenger_count,
+        trips_deduped.trip_distance,
+        trips_deduped.trip_type,
+        trips_deduped.payment_type,
         p.description as payment_type_description,
-        fare_amount,
-        extra,
-        mta_tax,
-        tip_amount,
-        tolls_amount,
-        ehail_fee,
-        improvement_surcharge,
-        total_amount
+        trips_deduped.fare_amount,
+        trips_deduped.extra,
+        trips_deduped.mta_tax,
+        trips_deduped.tip_amount,
+        trips_deduped.tolls_amount,
+        trips_deduped.ehail_fee,
+        trips_deduped.improvement_surcharge,
+        trips_deduped.total_amount
 
-    from trips_deduped t
+    from trips_deduped
     left join payment_types p
-        on t.payment_type = p.payment_type
-    where rn = 1        -- deduplicate here
+        on cast(trips_deduped.payment_type as int) = cast(p.payment_type as int)
+    where rn = 1
 )
 
 select * from final
