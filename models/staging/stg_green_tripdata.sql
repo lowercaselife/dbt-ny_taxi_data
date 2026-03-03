@@ -1,5 +1,6 @@
 select
   -- identifiers
+  'green' as service_type,
   cast(vendorid as int) as vendor_id,
   cast(ratecodeid as int) as rate_code_id,
   cast(pulocationid as int) as pickup_location_id,
@@ -22,6 +23,7 @@ select
   cast(improvement_surcharge as numeric) as improvement_surcharge,
   cast(total_amount as numeric) as total_amount,
   cast(payment_type as int) as payment_type
+
 
 from {{ source('raw_data', 'green_tripdata') }}
 where lpep_pickup_datetime is not null
